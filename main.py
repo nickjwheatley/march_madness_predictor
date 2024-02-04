@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime as dt
-from data_cleaning import web_scrape, clean_data
+from data_cleaning import web_scrape, clean_data, transform_data
 
 # Set data extraction parameters
 branch='men'
@@ -25,3 +25,5 @@ force_extract = False
 # EXTRACT AND CLEAN DATA
 raw_datas = web_scrape.extract_all_data(extraction_years, season_dates, this_year, branch, force_extract)
 cleaned_datas = clean_data.clean_data(raw_datas, this_year, branch)
+data = transform_data.transform_data(cleaned_datas, extraction_years, this_year, branch)
+data.head()

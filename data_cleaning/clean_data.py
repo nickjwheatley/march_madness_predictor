@@ -22,7 +22,6 @@ def clean_team_name(teams):
         'Mt\.':'Mount',
         'Ala\.':'Alabama',
         'Ariz\.':'Arizona',
-        'Cal\.':'California',
         'Colo\.':'Colorado',
         'Conn\.':'Connecticut',
         'Fla\.':'Florida',
@@ -67,12 +66,36 @@ def clean_team_name(teams):
         'Caro\.$':'Carolina',
         'Int\'l':'International',
         ' Lafayette$':'',
-        'Central Connecticut\.':'Central Connecticut State',
-        'Detroit\.':'Detroit Mercy',
-        '^Fort Wayne':'Purdue Fort Wayne',
+        'Central Connecticut$':'Central Connecticut State',
+        'Detroit$':'Detroit Mercy',
+        '^Fort Wayne$':'Purdue Fort Wayne',
         'ETSU$': 'East Tennessee State',
         '^Albany$': 'Albany (NY)',
-        
+        'Cal ': 'California ',
+        'Grambling$': 'Grambling State',
+        'Mississippi Valley$':'Mississippi Valley State',
+        '^Omaha$':'Nebraska Omaha',
+        'Nicholls$':'Nicholls State',
+        'NUI$':'Northern Illinois',
+        'Prairie View$':'Prairie View A&M',
+        '^Queens$':'Queens (NC)',
+        'SIUE':'SIU Edwardsville',
+        'Saint Francis PA':'Saint Francis (PA)',
+        "^Saint John's$":"Saint John's (NY)",
+        "Saint Mary's$":"Saint Mary's (CA)",
+        ' U$':'',
+        '^U ':'',
+        'Southern Miss$':'Southern Mississippi',
+        'SFA':'Stephen F. Austin',
+        '^A\&M Corpus Christi$':'Texas A&M Corpus Christi',
+        '^Kansas City':'UMKC',
+        'UNCW':'UNC Wilmington',
+        '^USC$':'Southern California',
+        'UT Rio Grande Valley':'Texas Rio Grande Valley',
+        'LIU$': 'LIU Brooklyn',
+        '^NIU$':'Northern Illinois',
+        'Sam Houston$':'Sam Houston State',
+        'SMU$': 'Southern Methodist'
     }
     for exp in expressions.keys():
         teams = teams.str.replace(exp,expressions[exp],case=False,regex=True)
@@ -108,16 +131,16 @@ def clean_team_name(teams):
         'UT Martin':'Tennessee Martin',
         'UAlbany':'Albany (NY)',
         'UTRGV':'Texas Rio Grande Valley',
-        'SMU$':'Southern Methodist',
-        # 'ETSU': 'East Tennessee State',
         'FIU':'Florida International',
-        'FDU':'Farleigh Dickinson',
-        'Grambling$':'Grambling State',
+        'FDU':'Fairleigh Dickinson',
         'UIW':'Incarnate Word',
-        'LIU$':'LUI Brooklyn',
         'Loyola MD':'Loyola (MD)',
-        'LMU (CA)':'Loyola Marymount'
-
+        'LMU (CA)':'Loyola Marymount',
+        'CSU Bakersfield': "California State Bakersfield",
+        'CSUN':'California State Northridge',
+        'Miami OH':'Miami (OH)',
+        'Loyola (IL)': 'Loyola Chicago',
+        'Long Island': 'LIU Brooklyn'
     }
     for r in replacements:
         teams = teams.str.replace(r,replacements[r])
@@ -177,8 +200,8 @@ def clean_data(datas,this_year,branch):
         bart.team = clean_team_name(bart.team)
     
     # Manually assign A&M - couldn't get it to change in previous function
-    ncaa.home_team = ncaa.home_team.str.replace('^A\&M Corpus Christi$','Texas A&M Corpus Christi')
-    ncaa.away_team = ncaa.away_team.str.replace('^A\&M Corpus Christi$','Texas A&M Corpus Christi')
+    ncaa.home_team = ncaa.home_team.str.replace('A&M Corpus Christi','Texas A&M Corpus Christi')
+    ncaa.away_team = ncaa.away_team.str.replace('A&M Corpus Christi','Texas A&M Corpus Christi')
     
     # Clean names of female ncaa qualifier teams
     if branch == 'women':
