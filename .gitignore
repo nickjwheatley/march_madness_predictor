@@ -1,0 +1,13 @@
+# Ignore files and folders
+##############################
+*config*
+*pycache*
+*.csv
+*venv*
+*.idea*
+*.pickle
+*.out
+*ipynb_checkpoints
+*secrets*
+!season_dates.csv
+*march_madness*
