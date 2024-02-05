@@ -122,8 +122,10 @@ def extract_ncaa_data(year,season_start_date,tournament_start_date,season_end_da
         df_temp['date'] = date
         df_temp['season_year'] = year
         dfs.append(df_temp)
-    
-    return pd.concat(dfs)
+
+    df = pd.concat(dfs)
+    df.loc[(df.season_type == 'ncaa_tournament') & (df.game_round == ''),'season_type'] = 'regular_season'
+    return df
 
 
 # In[2]:
@@ -159,14 +161,16 @@ def extract_barttorvik_data(year):
     current_season_flag = False
     if (year == dt.datetime.now().year) & (dt.datetime.now().month < 3):
         current_season_flag = True
-        df.Seed.fillna('TBD', inplace=True)
+        # df.Seed.fillna(np.nan, inplace=True)
         df['Final Round'].fillna('TBD', inplace=True)
 
     # df['Team'] = df['Team'].str.extract('(.*) [1-9]')
     df['Team'] = df['Team'].str.extract('^([^\d(]+)') # Clean team names
     df['Team'] = df['Team'].apply(lambda x: x.strip())
     df.insert(0,'Season Year',year)
-    df.dropna(inplace=True)
+
+    if not current_season_flag:
+        df.dropna(inplace=True)
 
     #
     if current_season_flag:
@@ -226,7 +230,7 @@ def extract_sportsref_data(year,this_year,team_opp='school',basic_adv='basic',br
                 lower_cols[col] = lower_cols[col]+'_opp'
     df = df[desired_columns].rename(columns=lower_cols)
     
-    # No Barttorvik data exists for women's league - most grab data from sportsref
+    # No Barttorvik data exists for women's league - must grab data from sportsref
     if (year == this_year) & (branch == 'women'):
         ncaa_qualifiers_w = df.copy()
         ncaa_qualifiers_w['ncaa_qualifier'] = ncaa_qualifiers_w.team.apply(
@@ -236,16 +240,16 @@ def extract_sportsref_data(year,this_year,team_opp='school',basic_adv='basic',br
         
     # Clean team names
     # Replace bad text
-    replacers_empty = ['\\xa0NCAA']
+    replacers_empty = [r'\xa0NCAA']
     replacers_space = ['-']
 
     for r in replacers_empty:
-        df.team = df.team.str.replace(r,'')
+        df.team = df.team.str.replace(r,'',case=True, regex=True)
         if (year == this_year) & (branch == 'women'):
             ncaa_qualifiers_w.team = ncaa_qualifiers_w.team.str.replace(r,'')
 
     for r in replacers_space:
-        df.team = df.team.str.replace(r,' ')
+        df.team = df.team.str.replace(r,' ',case=True, regex=True)
         if (year == this_year) & (branch == 'women'):
             ncaa_qualifiers_w.team = ncaa_qualifiers_w.team.str.replace(r,' ')
             
@@ -293,7 +297,7 @@ def extract_all_data(extraction_years,season_dates,this_year=2023,branch='men', 
         print(year)
         # Get NCAA Data
         ncaa_filepath = f'data/ncaa{str(year)[-2:]}_{branch}.csv'
-        if os.path.exists(ncaa_filepath):
+        if os.path.exists(ncaa_filepath):# & (not force):
             print(f'ncaa{year} already logged')
             ncaa = pd.read_csv(ncaa_filepath)
         else:
@@ -324,7 +328,7 @@ def extract_all_data(extraction_years,season_dates,this_year=2023,branch='men', 
 
         # Get Sports-Reference data
         sportsref_filepath = f'data/sportsref{str(year)[-2:]}_{branch}.csv'
-        if os.path.exists(sportsref_filepath) & (year != this_year): # Continue logging the current season
+        if os.path.exists(sportsref_filepath) & (year != this_year) & (not force): # Continue logging the current season
             print(f'sportsref{year} already logged')
             sportsref = pd.read_csv(sportsref_filepath)
         else:
