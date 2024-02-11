@@ -18,7 +18,7 @@ def sent_data(df):
     teams = list(df['team'].unique())
     team_dict = {}
 
-    client=OpenAI(api_key='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')
+    client=OpenAI(api_key='')
     total_calls = 0
     for team in teams:
         prompt = f"Provide a strength of team score on a scale of 1-100 for the 2023-2024 {team} Men's basketball team based on their performance and the quality of the teams they have played. Please provide only the score value"
