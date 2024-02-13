@@ -297,7 +297,7 @@ def extract_all_data(extraction_years,season_dates,this_year=2023,branch='men', 
         print(year)
         # Get NCAA Data
         ncaa_filepath = f'data/ncaa{str(year)[-2:]}_{branch}.csv'
-        if os.path.exists(ncaa_filepath):# & (not force):
+        if os.path.exists(ncaa_filepath) & (not force):
             print(f'ncaa{year} already logged')
             ncaa = pd.read_csv(ncaa_filepath)
         else:
@@ -336,11 +336,11 @@ def extract_all_data(extraction_years,season_dates,this_year=2023,branch='men', 
             sportsref.to_csv(sportsref_filepath,index=False)
         sportsrefs.append(sportsref)
 
-    ncaa = pd.concat(ncaas)
-    sportsref = pd.concat(sportsrefs)
+    ncaa = pd.concat(ncaas).drop_duplicates()
+    sportsref = pd.concat(sportsrefs).drop_duplicates()
     
     if branch == 'men':
-        bart = pd.concat(barts)
+        bart = pd.concat(barts).drop_duplicates()
         return ncaa,sportsref,bart
     else:
         return ncaa,sportsref

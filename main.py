@@ -27,4 +27,9 @@ force_transform = True
 raw_datas = web_scrape.extract_all_data(extraction_years, season_dates, this_year, branch, force_extract)
 cleaned_datas = clean_data.clean_data(raw_datas, this_year, branch)
 data = transform_data.transform_data(cleaned_datas, this_year, lookback_years, branch, force_transform)
-data.head()
+
+# Exclude qualitative columns for model training
+drop_columns = ['team','opponent','team_score','opponent_score','game_round','season_type','date','season_year',
+                'team_rank','opponent_rank','seed','seed_opp','home_game','g','w','l','g_opp','w_opp','l_opp',
+                'plus_minus','conf','conf_opp']
+df_features = data.drop(drop_columns, axis=1)
