@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime as dt
 from data_cleaning import web_scrape, clean_data, transform_data
+import os
 
 # Set data extraction parameters
 branch='men'
@@ -21,7 +22,7 @@ if this_year not in extraction_years:
 
 # Forces model to extract data, cache it locally, and transform it (add calculated metrics)
 force_extract = False
-force_transform = True
+force_transform = False
 
 # EXTRACT AND CLEAN DATA
 raw_datas = web_scrape.extract_all_data(extraction_years, season_dates, this_year, branch, force_extract)
@@ -33,3 +34,12 @@ drop_columns = ['team','opponent','team_score','opponent_score','game_round','se
                 'team_rank','opponent_rank','seed','seed_opp','home_game','g','w','l','g_opp','w_opp','l_opp',
                 'plus_minus','conf','conf_opp']
 df_features = data.drop(drop_columns, axis=1)
+
+features_filepath = 'data/model_features.csv'
+if (not os.path.exists(features_filepath)) | force_transform:
+    df_features.to_csv(features_filepath)
+
+import configparser
+config = configparser.ConfigParser()
+config.read('secrets.ini')
+print(config['gpt4']['token'])
