@@ -60,7 +60,7 @@ def log_model(df):
         'srs_opp', 'fg_opp', 'fga_opp', 'fg%_opp', '3p_opp', '3pa_opp',
         '3p%_opp', 'ft_opp', 'fta_opp', 'ft%_opp', 'orb_opp', 'trb_opp',
         'ast_opp', 'stl_opp', 'blk_opp', 'pf_opp', 'tov%_opp', 'seed',
-        'seed_opp', 'score_diff', 'luck', 'luck_opp', 'choke_rate',
+        'seed_opp', 'luck', 'luck_opp', 'choke_rate',
         'choke_rate_opp', 'upset_rate', 'upset_rate_opp', 'win_streak',
         'win_streak_opp', 'matchup_win_rate']
     df = df[desired_features].copy()
@@ -103,7 +103,7 @@ def corr_analysis(df):
         'srs_opp', 'fg_opp', 'fga_opp', 'fg%_opp', '3p_opp', '3pa_opp',
         '3p%_opp', 'ft_opp', 'fta_opp', 'ft%_opp', 'orb_opp', 'trb_opp',
         'ast_opp', 'stl_opp', 'blk_opp', 'pf_opp', 'tov%_opp', 'seed',
-        'seed_opp', 'score_diff', 'luck', 'luck_opp', 'choke_rate',
+        'seed_opp', 'luck', 'luck_opp', 'choke_rate',
         'choke_rate_opp', 'upset_rate', 'upset_rate_opp', 'win_streak',
         'win_streak_opp', 'matchup_win_rate']
     df = df[desired_features].copy()
@@ -123,7 +123,7 @@ def xgboost(df):
         'srs_opp', 'fg_opp', 'fga_opp', 'fg%_opp', '3p_opp', '3pa_opp',
         '3p%_opp', 'ft_opp', 'fta_opp', 'ft%_opp', 'orb_opp', 'trb_opp',
         'ast_opp', 'stl_opp', 'blk_opp', 'pf_opp', 'tov%_opp', 'seed',
-        'seed_opp', 'score_diff', 'luck', 'luck_opp', 'choke_rate',
+        'seed_opp', 'luck', 'luck_opp', 'choke_rate',
         'choke_rate_opp', 'upset_rate', 'upset_rate_opp', 'win_streak',
         'win_streak_opp', 'matchup_win_rate']
     df = df[desired_features].copy()
