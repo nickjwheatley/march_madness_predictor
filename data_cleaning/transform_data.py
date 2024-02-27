@@ -144,12 +144,19 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         # Season Game Win Rate
         sportsref['game_win_rate'] = sportsref['w'] / sportsref['g']
 
+        # Add GPT Scores
+        gpt_score_filepath = 'data/team_gpt_score.csv'
+        gpt_score_add = []
+        if os.path.exists(gpt_score_filepath):
+            gpt_scores = pd.read_csv(gpt_score_filepath)
+            sportsref = sportsref.merge(gpt_scores, on='team', how='left')
+            gpt_score_add = ['gpt_sent_score_avg']
+
         # Combine sport-reference and ncaa dataframes
         desired_cols = ['team','season_year','g','w','l','de','oe','te','pace','physicality_score','sos','srs','fg',
                         'fga','fg%','3p','3pa','3p%','ft','fta','ft%','orb','drb','trb','ast','stl','blk','pf','tov',
                         'tov%', 'poss','ast_per_poss','ast_per_fg','tov_per_poss','ast_to_tov','poss_per_game',
-                        'game_win_rate'
-                        ]
+                        'game_win_rate'] + gpt_score_add
         opponent_rename = {col:col+'_opp' for col in desired_cols if col not in ['team','season_year']}
         opponent_rename['team'] = 'opponent'
 
@@ -219,8 +226,8 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         data = data.merge(luck.rename(columns={'won':'luck_opp','team':'opponent'}),on=['opponent','season_year'],how='left')
         data.drop(['close_game'],axis=1,inplace=True)
 
-        data.luck.fillna(0,inplace=True)
-        data.luck_opp.fillna(0, inplace=True)
+        # data.luck.fillna(0,inplace=True)
+        # data.luck_opp.fillna(0, inplace=True)
 
 
         # Create choke metric
@@ -244,8 +251,8 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         data = data.merge(choke.rename(columns={'team':'opponent','won':'choke_rate_opp'}),on=['opponent','season_year'],how='left')
 
         # fillna with 0
-        data.choke_rate.fillna(0, inplace=True)
-        data.choke_rate_opp.fillna(0, inplace=True)
+        # data.choke_rate.fillna(0, inplace=True)
+        # data.choke_rate_opp.fillna(0, inplace=True)
 
         data.drop('chokable',axis=1,inplace=True)
 
@@ -272,8 +279,8 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         data.drop('upsettable',axis=1,inplace=True)
 
         # fillna with 0
-        data.upset_rate.fillna(0, inplace=True)
-        data.upset_rate_opp.fillna(0, inplace=True)
+        # data.upset_rate.fillna(0, inplace=True)
+        # data.upset_rate_opp.fillna(0, inplace=True)
 
         # Calculate average plus_minus
         data.sort_values(['team', 'date'], inplace=True)
@@ -346,7 +353,7 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         matchups_df = pd.DataFrame(match_wl,columns=['team','opponent','matchup_win_rate'])
         data = data.merge(matchups_df,on=['team','opponent'],how='left')
 
-        data.matchup_win_rate.fillna(0,inplace=True)
+        # data.matchup_win_rate.fillna(0,inplace=True)
 
         data.to_csv(tranformed_filepath,index=False)
     return data
