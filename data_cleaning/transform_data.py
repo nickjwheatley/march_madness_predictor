@@ -135,8 +135,8 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         # Add Assists to Turnovers ratio
         sportsref['ast_to_tov'] = sportsref['ast'] / sportsref['tov']
 
-        # Possessions per Game
-        sportsref['poss_per_game'] = sportsref['poss'] / sportsref['g']
+        # # Possessions per Game
+        # sportsref['poss_per_game'] = sportsref['poss'] / sportsref['g']
 
         # Add Defensive Rebounds
         sportsref['drb'] = sportsref['trb'] - sportsref['orb']
@@ -329,16 +329,18 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         print('Calculating matchup win rate')
         matchups_df = pd.DataFrame()
 
-        matchups = data[['team','opponent']].drop_duplicates().values.tolist()
+        matchups = data[['team','opponent','season_year']].drop_duplicates().values.tolist()
         match_wl = []
         for match in matchups:
             wins = data.loc[
                 (data.team == match[0]) &
-                (data.opponent == match[1]),'won'
+                (data.opponent == match[1]) &
+                (data.season_year <= match[2]),'won'
             ].sum()
             games = data.loc[
                 (data.team == match[0]) &
-                (data.opponent == match[1]),'won'
+                (data.opponent == match[1]) &
+                (data.season_year <= match[2]),'won'
             ].count()
 
             # Remove model's ability to predict using 1-off events
@@ -350,11 +352,11 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
             win_rate = np.nan if games == 0 else wins/games
             match_wl.append(match+[win_rate])
 
-        matchups_df = pd.DataFrame(match_wl,columns=['team','opponent','matchup_win_rate'])
-        data = data.merge(matchups_df,on=['team','opponent'],how='left')
+        matchups_df = pd.DataFrame(match_wl,columns=['team','opponent','season_year','matchup_win_rate'])
+        data = data.merge(matchups_df,on=['team','opponent','season_year'],how='left')
 
         # data.matchup_win_rate.fillna(0,inplace=True)
-
+        data = data.drop_duplicates()
         data.to_csv(tranformed_filepath,index=False)
     return data
 
