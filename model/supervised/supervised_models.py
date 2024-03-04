@@ -3,6 +3,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from openai import OpenAI
 from googlesearch import search
 import seaborn as sns
@@ -11,7 +13,7 @@ import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 
-data = pd.read_csv('transformed_data_men_21_to_24.csv')
+# data = pd.read_csv('../transformed_data_men_21_to_24.csv')
 
 #provides a sentiment analysis score for a team based on ChatGPT
 def sent_data(df):
@@ -144,4 +146,35 @@ def xgboost(df):
     accuracy = accuracy_score(y_test, y_pred)
     print(f"Accuracy: {accuracy * 100:.2f}%")
 
-xgboost(data)
+
+def build_best_model(data):
+    # Split training and test data
+    X = data.iloc[:, 1:]
+    y = data.iloc[:, 0]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    for scaler in [StandardScaler(), MinMaxScaler()]:
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
+
+    model = HistGradientBoostingClassifier(
+        learning_rate=0.05,
+        min_samples_leaf=25,
+        random_state=42)
+
+    # Train the model on the training set
+    model.fit(X_train, y_train)
+
+    # Print model performance
+    predictions = model.predict(X_test)
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, predictions))
+    print("\nClassification Report:")
+    print(classification_report(y_test, predictions))
+    return model
+
+# xgboost(data)
+
+

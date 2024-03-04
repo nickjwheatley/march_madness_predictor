@@ -1,7 +1,12 @@
 import pandas as pd
 import datetime as dt
 from data_cleaning import web_scrape, clean_data, transform_data
+from model.supervised.supervised_models import build_best_model
 import os
+import pickle
+import warnings
+
+warnings.filterwarnings("ignore")
 
 # Set data extraction parameters
 branch='men'
@@ -22,7 +27,7 @@ if this_year not in extraction_years:
 
 # Forces model to extract data, cache it locally, and transform it (add calculated metrics)
 force_extract = False
-force_transform = True
+force_transform = False
 
 # EXTRACT AND CLEAN DATA
 raw_datas = web_scrape.extract_all_data(extraction_years, season_dates, this_year, branch, force_extract)
@@ -39,7 +44,9 @@ features_filepath = 'data/model_features.csv'
 if (not os.path.exists(features_filepath)) | force_transform:
     df_features.to_csv(features_filepath, index=False)
 
-# import configparser
-# config = configparser.ConfigParser()
-# config.read('secrets.ini')
-# print(config['gpt4']['token'])
+# Create best model
+model = build_best_model(df_features)
+
+# Save model to disk
+pickle.dump(model, open('model/histGBClassifier.sav', 'wb'))
+print('model saved')

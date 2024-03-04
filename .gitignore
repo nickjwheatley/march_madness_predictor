@@ -9,8 +9,13 @@
 *.out
 *ipynb_checkpoints
 *secrets*
+*tourney_time.ipynb
 !season_dates.csv
 *march_madness*
 !*transformed_data_men_21_to_24.csv
 !*model_features.csv
 !*team_gpt_score.csv
+!*failure_analysis.csv
+!*feature_impacts.csv
+!*best_models.csv
+!*sensitivity_analysis.csv
