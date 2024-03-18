@@ -1,4 +1,4 @@
 ,f1_score,accuracy_score,parameters,cv_runtime(sec)
-Best Histogram-based Gradient Boosting Classification Tree,0.791757327531038,0.7941548582995951,"learning_rate: 0.05, max_depth: None, max_iter: 100, min_samples_leaf: 25",760
-Best Logistic Regression,0.7694447957506007,0.7693572874493927,"C: 1, max_iter: 50, penalty: l1, solver: liblinear",1176
-Best Stochastic Gradient Descent,0.7695455524445403,0.729251012145749,"alpha: 5e-05, loss: hinge, max_iter: 500, penalty: l2",106
+Best Histogram-based Gradient Boosting Classification Tree,0.8290598290598291,0.8326359832635983,"learning_rate: 0.05, max_depth: 5, max_iter: 100, min_samples_leaf: 15",435
+Best Histogram-based Gradient Boosting Classification Tree without Scaling,0.8311688311688312,0.8368200836820083,"learning_rate: 0.08, max_depth: 10, max_iter: 100, min_samples_leaf: 15",447
+Best Stochastic Gradient Descent,0.7719298245614036,0.7824267782426778,"alpha: 0.001, loss: hinge, max_iter: 500, penalty: l1",4
