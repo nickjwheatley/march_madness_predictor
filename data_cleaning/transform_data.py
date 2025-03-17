@@ -155,12 +155,15 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         # Combine sport-reference and ncaa dataframes
         desired_cols = ['team','season_year','g','w','l','de','oe','te','pace','physicality_score','sos','srs','fg',
                         'fga','fg%','3p','3pa','3p%','ft','fta','ft%','orb','drb','trb','ast','stl','blk','pf','tov',
-                        'tov%', 'poss','ast_per_poss','ast_per_fg','tov_per_poss','ast_to_tov','poss_per_game',
+                        'tov%', 'poss','ast_per_poss','ast_per_fg','tov_per_poss','ast_to_tov',
                         'game_win_rate'] + gpt_score_add
         opponent_rename = {col:col+'_opp' for col in desired_cols if col not in ['team','season_year']}
         opponent_rename['team'] = 'opponent'
 
         opponent_stats = sportsref[desired_cols].rename(columns=opponent_rename)
+
+        # NCAA website has hundreds of invalid games listed on the date below. Excluding them.
+        ncaa = ncaa.loc[ncaa.date != '2018/11/09']
 
         data = ncaa.merge(sportsref[desired_cols],on=['team','season_year'],how='left')
         data = data.merge(opponent_stats,on=['opponent','season_year'],how='left')
@@ -291,6 +294,9 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
         data['3mean_plus_minus'].fillna(method='bfill', inplace=True)
 
         plus_minus = data[['team', 'date', '3mean_plus_minus']].copy()
+        plus_minus.drop_duplicates(subset=['team','date'], keep='last',inplace=True)
+
+        # data = data.merge(plus_minus, on=['team','date'], how='left')
 
         # add opponent win_streaks
         data = data.merge(
@@ -307,17 +313,17 @@ def transform_data(datas,this_year,lookback,branch='men', force=False):
 
         # Shift win-streak down 1 game to show previous games win-streak
     #         data.win_streak = data.win_streak.apply(lambda x: x-1 if x != 0 else 0)
-        win_streaks = data[['team','date','win_streak']].copy()
+        win_streaks = data[['team','opponent','date','win_streak']].copy()
         win_streaks['win_streak'] = win_streaks[['team','win_streak']].groupby(['team']).shift(1).fillna(0).astype(int)
 
         data.drop('win_streak',axis=1,inplace=True)
         # add team win_streaks
-        data = data.merge(win_streaks,on=['team','date'],how='left')
+        data = data.merge(win_streaks,on=['team','opponent','date'],how='left')
 
         # add opponent win_streaks
         data = data.merge(
-            win_streaks.rename(columns={'team':'opponent','win_streak':'win_streak_opp'}),
-            on=['opponent','date'],
+            win_streaks.rename(columns={'opponent':'team','team':'opponent','win_streak':'win_streak_opp'}),
+            on=['team','opponent','date'],
             how='left'
         )
 

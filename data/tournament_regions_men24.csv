@@ -1,0 +1,69 @@
+team,seed,region,first_four
+Connecticut,1,East,FALSE
+Iowa State,2,East,FALSE
+Illinois,3,East,FALSE
+Auburn,4,East,FALSE
+San Diego State,5,East,FALSE
+Brigham Young,6,East,FALSE
+Washington State,7,East,FALSE
+Florida Atlantic,8,East,FALSE
+Northwestern,9,East,FALSE
+Drake,10,East,FALSE
+Duquesne,11,East,FALSE
+UAB,12,East,FALSE
+Yale,13,East,FALSE
+Morehead State,14,East,FALSE
+South Dakota State,15,East,FALSE
+Stetson,16,East,FALSE
+Purdue,1,Midwest,FALSE
+Tennessee,2,Midwest,FALSE
+Creighton,3,Midwest,FALSE
+Kansas,4,Midwest,FALSE
+Gonzaga,5,Midwest,FALSE
+South Carolina,6,Midwest,FALSE
+Texas,7,Midwest,FALSE
+Utah State,8,Midwest,FALSE
+TCU,9,Midwest,FALSE
+Virginia,10,Midwest,TRUE
+Colorado State,10,Midwest,TRUE
+Oregon,11,Midwest,FALSE
+McNeese State,12,Midwest,FALSE
+Samford,13,Midwest,FALSE
+Akron,14,Midwest,FALSE
+Saint Peter's,15,Midwest,FALSE
+Montana State,16,Midwest,TRUE
+Grambling State,16,Midwest,TRUE
+Houston,1,South,FALSE
+Marquette,2,South,FALSE
+Kentucky,3,South,FALSE
+Duke,4,South,FALSE
+Wisconsin,5,South,FALSE
+Texas Tech,6,South,FALSE
+Florida,7,South,FALSE
+Nebraska,8,South,FALSE
+Texas A&M,9,South,FALSE
+Boise State,10,South,TRUE
+Colorado,10,South,TRUE
+North Carolina State,11,South,FALSE
+James Madison,12,South,FALSE
+Vermont,13,South,FALSE
+Oakland,14,South,FALSE
+Western Kentucky,15,South,FALSE
+Longwood,16,South,FALSE
+North Carolina,1,West,FALSE
+Arizona,2,West,FALSE
+Baylor,3,West,FALSE
+Alabama,4,West,FALSE
+Saint Mary's (CA),5,West,FALSE
+Clemson,6,West,FALSE
+Dayton,7,West,FALSE
+Mississippi State,8,West,FALSE
+Michigan State,9,West,FALSE
+Nevada,10,West,FALSE
+New Mexico,11,West,FALSE
+Grand Canyon,12,West,FALSE
+College of Charleston,13,West,FALSE
+Colgate,14,West,FALSE
+Long Beach State,15,West,FALSE
+Howard,16,West,TRUE
+Wagner,16,West,TRUE

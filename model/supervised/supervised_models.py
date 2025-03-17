@@ -152,27 +152,33 @@ def build_best_model(data):
     X = data.iloc[:, 1:]
     y = data.iloc[:, 0]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)#, random_state=42)
 
-    for scaler in [StandardScaler(), MinMaxScaler()]:
-        X_train = scaler.fit_transform(X_train)
-        X_test = scaler.transform(X_test)
+    # for scaler in [StandardScaler(), MinMaxScaler()]:
+    #     X_train = scaler.fit_transform(X_train)
+    #     X_test = scaler.transform(X_test)
+
+    # model = HistGradientBoostingClassifier(
+    #     learning_rate=0.05,
+    #     min_samples_leaf=25,
+    #     random_state=42)
 
     model = HistGradientBoostingClassifier(
-        learning_rate=0.05,
-        min_samples_leaf=25,
-        random_state=42)
+        learning_rate=0.08,
+        max_depth=10,
+        min_samples_leaf=15)
 
     # Train the model on the training set
     model.fit(X_train, y_train)
+    # model.fit(X, y)
 
     # Print model performance
-    predictions = model.predict(X_test)
-
-    print("Confusion Matrix:")
-    print(confusion_matrix(y_test, predictions))
-    print("\nClassification Report:")
-    print(classification_report(y_test, predictions))
+    # predictions = model.predict(X_test)
+    #
+    # print("Confusion Matrix:")
+    # print(confusion_matrix(y_test, predictions))
+    # print("\nClassification Report:")
+    # print(classification_report(y_test, predictions))
     return model
 
 # xgboost(data)
